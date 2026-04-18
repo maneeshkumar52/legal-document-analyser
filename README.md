@@ -1,15 +1,38 @@
 # Legal Document Analyser
 
-Production-oriented AI application built on FastAPI with a modular service layout and enterprise-friendly project structure.
+Professional-grade legal AI analysis system designed for production-style development with clear service boundaries, repeatable setup, and deterministic execution steps.
 
-## Architecture
+## 1. Executive Overview
 
-- API Layer: FastAPI application exposed via Uvicorn
-- Domain Layer: Business modules under source folders (routing, orchestration, services)
-- Integration Layer: Azure/OpenAI/search/messaging integrations through environment-driven configuration
-- Quality Layer: Automated tests and demo/e2e scripts
+This repository provides:
+- A FastAPI service entrypoint for API-first integration
+- Structured modules for orchestration, domain logic, and integrations
+- Test scaffolding for incremental quality assurance
+- Environment-driven configuration for local, staging, and production workflows
 
-## Repository Structure
+## 2. Architecture
+
+### 2.1 Logical Architecture
+
+```txt
+Client / Integrator
+      |
+      v
+FastAPI API Layer (Uvicorn)
+      |
+      +--> Application Layer (routing, orchestration)
+      +--> Domain Layer (business rules)
+      +--> Integration Layer (Azure/OpenAI/search/messaging)
+      +--> Data/State Layer (configured adapters)
+```
+
+### 2.2 Runtime Components
+- API Server: FastAPI + Uvicorn
+- Configuration: environment variables and .env file
+- External Integrations: enabled per environment
+- Validation: pytest + e2e demo script
+
+## 3. Repository Structure
 
 ```txt
 legal-document-analyser/
@@ -20,15 +43,16 @@ legal-document-analyser/
   demo_e2e.py
 ```
 
-## Prerequisites
+## 4. Prerequisites
 
 - Python 3.10+
 - pip 23+
-- Optional cloud credentials depending on enabled integrations
+- Git
+- Optional cloud credentials for enabled connectors
 
-## Setup and Execution
+## 5. Local Setup
 
-1. Clone and enter repository
+1. Clone repository
 
 ```bash
 git clone https://github.com/maneeshkumar52/legal-document-analyser.git
@@ -49,35 +73,60 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-4. Configure environment variables
+4. Configure environment
 
 ```bash
 cp .env.example .env 2>/dev/null || true
 ```
 
-5. Start API server
+## 6. Run the Service
 
 ```bash
 uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-6. Verify API docs
+Service endpoints:
+- API docs: http://127.0.0.1:8000/docs
+- OpenAPI JSON: http://127.0.0.1:8000/openapi.json
 
-- Swagger UI: http://127.0.0.1:8000/docs
+## 7. Validation and Test Flow
 
-## Testing
+1. Syntax validation
+
+```bash
+python3 -m compileall -q .
+```
+
+2. Unit/integration tests
 
 ```bash
 pytest -q
+```
+
+3. End-to-end demo
+
+```bash
 python demo_e2e.py
 ```
 
-## Troubleshooting
+## 8. Troubleshooting
 
-- Import errors: ensure virtual environment is active and dependencies are installed
-- Port conflict: change `--port` value in the Uvicorn command
-- Missing cloud credentials: validate `.env` or shell exports before startup
+- Import or module errors:
+  - Ensure .venv is active
+  - Reinstall dependencies
+- Port already in use:
+  - Change --port value
+- Cloud connector failures:
+  - Validate credentials and service endpoints in .env
 
-## License
+## 9. Production Readiness Checklist
 
-See `LICENSE` in this repository.
+- [ ] Environment variables externalized
+- [ ] Secrets not committed
+- [ ] Logging and tracing enabled
+- [ ] Test suite green in CI
+- [ ] Health checks configured in deployment
+
+## 10. License
+
+See LICENSE in this repository.
